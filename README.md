@@ -2,6 +2,9 @@
 
 A simple cow catalog web application built with Angular 17 (standalone components).
 
+## Hosted on GH Pages
+https://milanmishra1206.github.io/cow-catalog/cows
+
 ## Features
 
 | Feature | Description |
@@ -16,7 +19,7 @@ A simple cow catalog web application built with Angular 17 (standalone component
 - **Angular 17** – Standalone components, Signals for state
 - **Angular Router** – SPA navigation
 - **Angular Forms** – Reactive forms for the Add Cow form
-- **Tailwind CSS v3**
+- **Tailwind CSS v3** - Easier implementation of styling
 
 ## Project Structure
 
