@@ -1,0 +1,105 @@
+<div class="flex items-center justify-between mb-5">
+  <h1 class="text-2xl font-semibold text-green-900">Cow List</h1>
+  <button
+    class="bg-green-800 hover:bg-green-900 text-white text-sm font-medium px-4 py-2 rounded transition-colors"
+    (click)="goToAdd()">
+    + Add New Cow
+  </button>
+</div>
+
+<div class="bg-white rounded-md shadow-sm p-4 flex flex-wrap items-end gap-4 mb-4">
+  <div class="flex flex-col gap-1">
+    <label class="text-xs font-medium text-gray-500 uppercase tracking-wide" for="searchTag">Search by Tag</label>
+    <input
+      id="searchTag"
+      type="text"
+      placeholder="e.g. ET-1001"
+      [(ngModel)]="searchTag"
+      (ngModelChange)="onSearchChange()"
+      class="border border-gray-300 rounded px-3 py-2 text-sm min-w-40 focus:outline-none focus:border-green-700"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="text-xs font-medium text-gray-500 uppercase tracking-wide" for="statusFilter">Status</label>
+    <select
+      id="statusFilter"
+      [(ngModel)]="selectedStatus"
+      (ngModelChange)="onStatusChange()"
+      class="border border-gray-300 rounded px-3 py-2 text-sm min-w-40 bg-white focus:outline-none focus:border-green-700">
+      <option value="">All Statuses</option>
+      <option value="Active">Active</option>
+      <option value="In Treatment">In Treatment</option>
+      <option value="Deceased">Deceased</option>
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label class="text-xs font-medium text-gray-500 uppercase tracking-wide" for="penFilter">Pen</label>
+    <select
+      id="penFilter"
+      [(ngModel)]="selectedPen"
+      (ngModelChange)="onPenChange()"
+      class="border border-gray-300 rounded px-3 py-2 text-sm min-w-40 bg-white focus:outline-none focus:border-green-700">
+      <option value="">All Pens</option>
+      @for (pen of availablePens(); track pen) {
+        <option [value]="pen">{{ pen }}</option>
+      }
+    </select>
+  </div>
+
+  <button
+    class="border border-gray-300 bg-white hover:bg-gray-100 text-gray-600 text-sm px-4 py-2 rounded transition-colors"
+    (click)="resetFilters()">
+    Reset
+  </button>
+</div>
+
+<p class="text-sm text-gray-500 mb-2">{{ cows().length }} cow(s) found</p>
+
+@if (cows().length > 0) {
+  <div class="bg-white rounded-md shadow-sm overflow-hidden">
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="bg-gray-50 border-b-2 border-gray-200">
+          <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Ear Tag</th>
+          <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Sex</th>
+          <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Pen</th>
+          <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
+          <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Last Event Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cow of cows(); track cow.id) {
+          <tr
+            class="border-b border-gray-100 last:border-b-0 cursor-pointer hover:bg-green-50 transition-colors"
+            (click)="goToDetail(cow)">
+            <td class="px-4 py-3 font-semibold text-green-800">{{ cow.id }}</td>
+            <td class="px-4 py-3 text-gray-700">{{ cow.sex }}</td>
+            <td class="px-4 py-3 text-gray-700">{{ cow.pen }}</td>
+            <td class="px-4 py-3">
+              <span class="inline-block px-3 py-0.5 rounded-full text-xs font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': cow.status === 'Active',
+                  'bg-orange-100 text-orange-700': cow.status === 'In Treatment',
+                  'bg-red-100 text-red-700': cow.status === 'Deceased'
+                }">
+                {{ cow.status }}
+              </span>
+            </td>
+            <td class="px-4 py-3 text-gray-700">{{ cow.lastEventDate }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <div class="bg-white rounded-md shadow-sm text-center py-12 px-6">
+    <p class="text-gray-500 text-base mb-4">No cows match your search criteria.</p>
+    <button
+      class="border border-gray-300 bg-white hover:bg-gray-100 text-gray-600 text-sm px-4 py-2 rounded transition-colors"
+      (click)="resetFilters()">
+      Clear Filters
+    </button>
+  </div>
+}
